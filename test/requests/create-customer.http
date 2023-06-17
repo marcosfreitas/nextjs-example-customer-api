@@ -1,0 +1,8 @@
+POST http://localhost:3000/customers HTTP/1.1
+content-type: application/json
+
+{
+    "un": "expected",
+    "document": "01254875698",
+    "name": "Aloe Vera"
+}
