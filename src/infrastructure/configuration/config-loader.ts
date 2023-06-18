@@ -32,12 +32,6 @@ export const configLoader = (
     },
     sso: {
       authURL: env.SSO_AUTH_URL,
-      clientId: env.SSO_CLIENT_ID,
-      clientSecret: env.SSO_CLIENT_SECRET,
-      username: env.SSO_USERNAME,
-      password: env.SSO_PASSWORD,
-      grantType: env.SSO_GRANT_TYPE,
-      scope: env.SSO_SCOPE,
     },
   };
 
