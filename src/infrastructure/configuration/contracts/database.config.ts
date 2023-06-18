@@ -1,10 +1,11 @@
-import { IsDefined, IsNumber, IsNumberString } from 'class-validator';
+import { IsDefined, IsNumber, IsNumberString, IsString } from 'class-validator';
 
 export class DatabaseConfig {
   @IsDefined()
   public readonly driver: 'mysql' | 'mariadb' | 'postgres' | 'sqlite' | 'redis';
 
   @IsDefined()
+  @IsString()
   public readonly host: string;
 
   @IsDefined()

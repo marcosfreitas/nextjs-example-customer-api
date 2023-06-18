@@ -1,0 +1,9 @@
+POST https://accounts.seguros.vitta.com.br/auth/realms/careers/protocol/openid-connect/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials
+&client_id=customers
+&client_secret=453000f7-47a0-4489-bc47-891c742650e2
+&username=marcosvsfreitas@gmail.com
+&password=bWFyY29zdnNmcmVpdGFzQGdtYWlsLmNvbQ==
+scope=openid

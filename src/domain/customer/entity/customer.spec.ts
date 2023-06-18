@@ -1,0 +1,34 @@
+import { BadRequestException } from '@nestjs/common';
+import Customer from './customer';
+import { isUUID } from 'class-validator';
+
+describe('Customer Unit Tests', () => {
+  it('Should have a valid generated UUID v4', () => {
+    const customer = new Customer(4527, 'Jhon');
+    expect(isUUID(customer.uuid, '4')).toBe(true);
+  });
+
+  it('Should throw error when document is empty', () => {
+    expect(() => {
+      new Customer(0, 'Jhon');
+    }).toThrowError(BadRequestException);
+  });
+
+  it('Should throw error when name is empty', () => {
+    expect(() => {
+      new Customer(456789, '');
+    }).toThrowError(BadRequestException);
+  });
+
+  it('method should change name correctly', () => {
+    const customer = new Customer(123456, 'Maria');
+    customer.changeName('Maria Flor');
+    expect(customer.name).toBe('Maria Flor');
+  });
+
+  it('method should change document correctly', () => {
+    const customer = new Customer(123456, 'Maria');
+    customer.changeDocument(10001);
+    expect(customer.document).toBe(10001);
+  });
+});

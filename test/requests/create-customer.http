@@ -1,8 +1,8 @@
 POST http://localhost:3000/customers HTTP/1.1
-content-type: application/json
+Content-Type: application/json
+Authorization: Bearer ABC
 
 {
-    "un": "expected",
     "document": "01254875698",
     "name": "Aloe Vera"
 }

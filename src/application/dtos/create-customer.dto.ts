@@ -1,4 +1,3 @@
-import { Logger } from '@nestjs/common';
 import {
   IsDefined,
   IsNotEmpty,
