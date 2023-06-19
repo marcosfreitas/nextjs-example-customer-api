@@ -33,6 +33,12 @@ export const configLoader = (
     sso: {
       authURL: env.SSO_AUTH_URL,
     },
+    cacheServer: {
+      redisHost: env.REDIS_HOST,
+      redisPort: env.REDIS_PORT,
+      redisPassword: env.REDIS_PASSWORD,
+      cacheTtl: env.CACHE_TTL,
+    },
   };
 
   return plainToInstance(GlobalConfig, configurations);

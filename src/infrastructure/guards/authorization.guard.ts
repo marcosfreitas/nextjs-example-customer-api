@@ -1,7 +1,9 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { SSOService } from '../sso/services/sso.service';
+
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { HttpArgumentsHost } from '@nestjs/common/interfaces';
+
+import { SSOService } from '../sso/services/sso.service';
 
 @Injectable()
 export class AuthorizationGuard implements CanActivate {
@@ -18,7 +20,11 @@ export class AuthorizationGuard implements CanActivate {
   private async validateRequest(http: HttpArgumentsHost): Promise<boolean> {
     const request = http.getRequest();
 
-    const authorizationHeader: string = request['headers']['authorization'];
+    if (!('authorization' in request.headers)) {
+      return false;
+    }
+
+    const authorizationHeader: string = request.headers.authorization;
     const token: string = authorizationHeader.replace(/^Bearer\s+/i, '');
 
     if (!token) {

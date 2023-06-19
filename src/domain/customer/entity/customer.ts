@@ -59,4 +59,12 @@ export default class Customer {
     this._document = document;
     this.validate();
   }
+
+  toObject() {
+    return {
+      uuid: this._uuid,
+      document: this._document,
+      name: this._name,
+    };
+  }
 }

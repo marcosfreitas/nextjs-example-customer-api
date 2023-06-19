@@ -10,7 +10,6 @@ export class CreateCustomerDto {
   @IsNumberString()
   public document: number;
 
-  @IsDefined()
   @IsString()
   @IsNotEmpty()
   public name: string;

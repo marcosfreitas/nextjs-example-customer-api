@@ -12,6 +12,7 @@ import {
   SSOUserInfoFailedResponse,
   SSOUserInfoSuccessResponse,
 } from '../contracts/sso-user-info.response';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class SSOService {
@@ -33,25 +34,22 @@ export class SSOService {
     bearerToken: string,
   ): Promise<SSOUserInfoSuccessResponse | SSOUserInfoFailedResponse> {
     try {
-      const data = {
-        client_id: this.client_id,
-        client_secret: this.client_secret,
-        username: this.username,
-        password: this.password,
-        grant_type: this.grant_type,
-        scope: this.scope,
-      };
-
       const response = await firstValueFrom<
         AxiosResponse<SSOUserInfoSuccessResponse>
       >(
-        this.httpService.post(`${this._auth_url}/userinfo`, data, {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Authorization: `Bearer ${bearerToken}`,
+        this.httpService.post(
+          `${this._auth_url}/userinfo`,
+          {},
+          {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              Authorization: `Bearer ${bearerToken}`,
+            },
           },
-        }),
+        ),
       ).catch((reason) => {
+        Logger.debug('reason', reason);
+
         if (reason.response.status === HttpStatus.UNAUTHORIZED) {
           Logger.error(
             'Invalid Token: Authorization failed at SSO service',
