@@ -117,6 +117,11 @@ $ npm run lint
 Outros comandos estão disponíveis no arquivo `package.json`.
 
 ### Executando o projeto com Docker Compose
+
+Há o arquivo `docker-compose.dev.yml` para fins de desenvolvimento que usa como base o Dockerfile da aplicação, onde todo o ambiente é preparado e a aplicação roda em estado de produção.
+
+Um possível deploy aconteceria utilizando o Dockerfile ou um novo docker-compose.yml.
+
 ```bash
 # há o arquivo docker-compose.dev.yml para executar o projeto em modo de desenvolvimento
 $ docker-compose -f docker-compose.dev.yml up

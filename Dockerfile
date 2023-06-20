@@ -23,6 +23,7 @@ ENV PORT=${APP_PORT}
 
 RUN apt-get update \
   && apt-get install -y telnet net-tools dnsutils curl \
+  && npm i -g @nestjs/cli \
   && groupadd -g 2000 appuser \
   && useradd -r -u 2000 -g appuser appuser
 
