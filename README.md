@@ -131,12 +131,24 @@ $ docker-compose build --no-cache
 #### Endpoints disponíveis
 
 Ao executar o projeto ele estará disponível no `localhost:3000`.
-.
+
 - [x] `(POST) /customers`
 - [x] `(GET) /customers/:uuid`
 - [x] `(PUT) /customers/:uuid`
 
+Para consumir os endpoints você precisar passar o token de autorização recebido da API do SSO.
+Observe na pasta de testes os exemplos de requisições, antes de consumir a aplicação obtenha o token como é feito no arquivo `sso-auth.http`.
 
+```
+./test/requests
+  create-customer.http
+  get-customer.http
+  sso-auth.http
+  sso-discovery-endpoint.http
+  sso-token-introspection.http
+  sso-userinfo.http
+  update-customer.http
+```
 
 #### Redis
 
