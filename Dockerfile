@@ -29,8 +29,10 @@ RUN apt-get update \
 
 COPY --from=build /build/node_modules ./node_modules
 COPY --from=build /build/dist ./dist
+COPY --from=build /build/tsconfig.json .
 COPY --from=build /build/package.json .
 COPY --from=build /build/package-lock.json .
+
 
 RUN chown -R appuser:appuser $SRV_DIR
 

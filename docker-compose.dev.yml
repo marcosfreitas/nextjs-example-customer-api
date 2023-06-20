@@ -16,6 +16,8 @@ services:
       - cache
     volumes:
       - ./:/srv/app
+      - /srv/app/node_modules
+      - /srv/app/dist
     command: npm run start:dev
 
   cache:
