@@ -125,7 +125,7 @@ $ docker-compose -f docker-compose.dev.yml up
 $ docker-compose -f docker-compose.dev.yml down -v --rmi all
 
 # se você tiver problemas é interessante rodar o comando acima e reconstruir a imagem sem cache, após isso você pode subir o container novamente
-$ docker-compose build --no-cache
+$ docker-compose -f docker-compose.dev.yml build --no-cache
 ```
 
 #### Endpoints disponíveis
