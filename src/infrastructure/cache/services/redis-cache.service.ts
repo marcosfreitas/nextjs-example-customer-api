@@ -10,6 +10,7 @@ export class RedisCacheService {
     this._cacheManager = new Redis({
       port: configService.get('cacheServer.redisPort'),
       host: configService.get('cacheServer.redisHost'),
+      username: 'default',
       password: configService.get('cacheServer.redisPassword'),
       db: 0,
       ttl: parseInt(configService.get('cacheServer.cacheTtl')),

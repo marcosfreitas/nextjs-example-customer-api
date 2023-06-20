@@ -48,8 +48,6 @@ export class SSOService {
           },
         ),
       ).catch((reason) => {
-        Logger.debug('reason', reason);
-
         if (reason.response.status === HttpStatus.UNAUTHORIZED) {
           Logger.error(
             'Invalid Token: Authorization failed at SSO service',
