@@ -47,28 +47,27 @@ export class SSOService {
             },
           },
         ),
-      ).catch((reason) => {
-        if (reason.response.status === HttpStatus.UNAUTHORIZED) {
-          Logger.error(
-            'Invalid Token: Authorization failed at SSO service',
-            reason.response,
-          );
-          const errorData = reason.response;
-
-          return errorData;
-        }
-
-        return reason;
-      });
+      );
 
       return response.data;
     } catch (error: any) {
-      if ((error as AxiosError) && error?.response?.status) {
+      if (error.response) {
+        if (error.response.status === HttpStatus.UNAUTHORIZED) {
+          Logger.error(
+            'Invalid Token: Authorization failed at SSO service',
+            error.response,
+          );
+          return error.response.data;
+        }
+
         Logger.error(
-          'Authorization failed at SSO service',
-          error as AxiosError,
+          'Unexpected Authorization error during SSO service request',
+          error.response,
         );
-        throw new BadGatewayException();
+        throw new InternalServerErrorException();
+      } else if (error.code === 'ECONNREFUSED') {
+        Logger.error('Unavailable SSO Server: Connection refused');
+        throw new BadGatewayException('Unavailable SSO Server');
       }
 
       Logger.error(
