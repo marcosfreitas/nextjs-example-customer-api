@@ -1,8 +1,6 @@
-import { Redis, RedisOptions } from 'ioredis';
+import { Redis } from 'ioredis';
 import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
-import { Environment } from '@src/infrastructure/configuration/contracts/env.config';
-
 @Injectable()
 export class RedisCacheService {
   private _cacheManager: Redis;

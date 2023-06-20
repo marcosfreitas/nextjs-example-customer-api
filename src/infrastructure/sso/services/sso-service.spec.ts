@@ -1,5 +1,5 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { firstValueFrom, of, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 import {
   SSOUserInfoFailedResponse,

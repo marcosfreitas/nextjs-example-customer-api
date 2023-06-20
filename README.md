@@ -1,73 +1,159 @@
+
+## Marcos Vinícius Silva de Freitas
+<br>
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+<img src="https://nestjs.com/img/logo_text.svg" width="80">
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<p align="center">Project built with NestJS Framework.</p>
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Descrição
 
-## Description
+Este projeto foi construído com TypeScript e Node.JS (versão mínima 18).
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Todas as configurações básicas foram feitas para:
 
-## Installation
+- realizar a verificação de qualidade de código (usando o **eslint** e **prettier**)
+- dar mais qualidade ao código em desenvolvimento utilizando **TypeScript** e compilando para **Javascript**.
 
-```bash
-$ npm install
+As dependências do projeto podem ser vistas no arquivo `package.json`;
+
+Foram implementados testes automáticos usando o **Jest** para testar o comportamento **unitário** das classes, outros testes como de integração e E2E não foram adicionados.
+
+## DDD
+
+O projeto está propositalmente organizado seguindo o padrão Domain-Driven-Design, visando manutenção e extensibilidade do projeto. Portando, não adicionei a pasta "modules" que centralizava a criação dos módulos.
+
+O objetivo é orquestrar a arquitetura do projeto de acordo com os contextos e domínios da organização. Nesse caso nosso único contexto é o "Customers", porém fica fácil escalarmos e adicionarmos novos domínios ou contextos de acordo com as camadas existentes no projeto:
+
+```diff
+./src
++  - application
+  a camada de aplicação é responsável por abrigar os casos de uso (lógica antes das regras de negócio) e despachar o processamento para os serviços do domínio relacionado.
++  - domain
+  para cada domínio há um módulo do NestJS. Na camada de domínio podemos colocar a regra de negócio propriamente dita, essa solicita estruturaas como repositórios, componentes de infraestrutura, etc, para realizar as operações.
++  - infrastructure
+  os módulos também podem ser uma parte importante e reutilizável presente em outras camadas da aplicação, por exemplo em infraestrutura temos o módulo de cache.
++  - interfaces/http/controllers
+  a camada de interface é responsável pelo relacionamento com o mundo exterior.
++./test
+  na pasta de testes temos os relatórios de cobertura e arquivos do tipo .http para execução manual de requisições. Aqui podemos extender para termos testes de integração e E2E.
+```
+## Features
+
+Este projeto implementa a API Customers com as funcionalidades a seguir:
+- [x] Criação;
+- [x] Listagem de dados de um cliente por UUID;
+- [X] Atualização dos dados de um cliente por UUID;
+
+
+A seguir, algumas informações sobre a execução da aplicação e como você pode usá-la.
+
+## Variáveis de Ambiente
+
+O sistema precisa de alguma variáveis de ambiente, parte delas estão configuradas mas de fato não são utilizadas, como é o caso das variáveis de banco de dados.
+
+
+Renomeie o arquivo `.env.example` para `.env` na raiz do projeto antes da execução.
+
+
+```diff
+APP_NAME=CUSTOMER_API
+
+NODE_ENV=dev
+APP_VERSION=1.0.0
+APP_PORT=3000
+APP_DEBUGGER_PORT=8000
+
+SSO_AUTH_URL="https://accounts.seguros.vitta.com.br/auth/realms/careers/protocol/openid-connect"
+
+REDIS_HOST=cache
+REDIS_PORT=6379
+REDIS_PASSWORD=
+
+CACHE_TTL=9999999
 ```
 
-## Running the app
+## Dependências
+
+O projeto está utilizando o **NPM** para gerenciamento de dependências.
+
+Contudo, veremos que ao rodar o projeto todo o ambiente será preparado sozinho.
+
+Para instalar manualmente execute:
 
 ```bash
-# development
+$ npm run install
+```
+
+## Comandos disponíveis
+
+Estes são os comandos disponíveis para executar o projeto no ambiente adequado.
+
+```bash
+# executa o projeto em modo de desenvolvimento
 $ npm run start
 
-# watch mode
+# executa o projeto em modo de desenvolvimento com "watch mode"
 $ npm run start:dev
 
-# production mode
+# executa o projeto em modo de produção
 $ npm run start:prod
+
+# executa os testes unitários
+$ npm run tests
+
+# executa os testes unitários com relatório de cobertura
+$ npm run tests:cov
+
+# compilar o typescript
+$ npm run build
+
+# executar o lint
+$ npm run lint
+
 ```
 
-## Test
+Outros comandos estão disponíveis no arquivo `package.json`.
 
+### Executando o projeto com Docker Compose
 ```bash
-# unit tests
-$ npm run test
+# há o arquivo docker-compose.dev.yml para executar o projeto em modo de desenvolvimento
+$ docker-compose -f docker-compose.dev.yml up
 
-# e2e tests
-$ npm run test:e2e
+# para remover o container, imagem e volume relacionados a este projeto:
+$ docker-compose -f docker-compose.dev.yml down -v --rmi all
 
-# test coverage
-$ npm run test:cov
+# se você tiver problemas é interessante rodar o comando acima e reconstruir a imagem sem cache, após isso você pode subir o container novamente
+$ docker-compose build --no-cache
 ```
 
-## Support
+#### Endpoints disponíveis
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Ao executar o projeto ele estará disponível no `localhost:3000`.
+.
+- [x] `(POST) /customers`
+- [x] `(GET) /customers/:uuid`
+- [x] `(PUT) /customers/:uuid`
 
-## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-## License
+#### Redis
 
-Nest is [MIT licensed](LICENSE).
+Para acessar o redis, você precisar acessar o container docker:
+
+```
+docker exec -it cache /bin/bash
+```
+
+Já para acessar os registros, você precisará utilizar o redis-cli ou outra forma de sua preferência, mas lembre-se que foi definida uma senha no arquivo .env.
+
+```
+redis-cli --pass SUA_SENHA
+```
+
+# Notas
+
+Como a estrutura do projeto é bem simples, não adicionei testes de integração e E2E, contudo o objetivo de testar o comportamento dos componentes das classes foi atingido com os testes unitários.
+
+Com o apoio da cobertura dos testes, após executar o `npm run test:cov`, podemos ver que há arquivos não cobertos pelos testes, isso foi proposital. Foquei apenas em construir testes para os componentes principais que estavam relacionados à regra de negócio do projeto, mas também apenas para demonstrar o conhecimento.

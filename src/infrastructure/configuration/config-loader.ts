@@ -22,14 +22,6 @@ export const configLoader = (
       name: env.APP_NAME,
       listenPort: parseInt(env.APP_PORT, 10) || 22200,
     },
-    database: {
-      driver: env.DB_DRIVER,
-      host: env.DB_HOST,
-      port: env.DB_PORT,
-      name: env.APP_NAME,
-      user: env.DB_USER,
-      password: env.DB_PASSWORD,
-    },
     sso: {
       authURL: env.SSO_AUTH_URL,
     },
