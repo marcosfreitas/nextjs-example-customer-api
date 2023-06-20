@@ -1,3 +1,10 @@
+import { AxiosError, AxiosResponse } from 'axios';
+import { firstValueFrom, of, throwError } from 'rxjs';
+
+import {
+  SSOUserInfoFailedResponse,
+  SSOUserInfoSuccessResponse,
+} from '@infrastructure/sso/contracts/sso-user-info.response';
 import { HttpService } from '@nestjs/axios';
 import {
   BadGatewayException,
@@ -6,10 +13,8 @@ import {
   Logger,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AxiosResponse, AxiosError } from 'axios';
+
 import { SSOService } from './sso.service';
-import { of, throwError } from 'rxjs';
-import { SSOUserInfoSuccessResponse } from '@infrastructure/sso/contracts/sso-user-info.response';
 
 describe('SSOService Unit Tests', () => {
   let ssoService: SSOService;
@@ -61,38 +66,55 @@ describe('SSOService Unit Tests', () => {
     });
 
     it('should return SSOUserInfoFailedResponse if the request returns UNAUTHORIZED status', async () => {
-      const responseMock: AxiosResponse = {
-        data: {},
+      const responseMock: AxiosResponse<SSOUserInfoFailedResponse> = {
+        data: {
+          error: 'invalid_token',
+          error_description: 'Token verification failed',
+        },
         status: HttpStatus.UNAUTHORIZED,
         statusText: 'Unauthorized',
         headers: {},
         config: {} as any,
       };
 
-      jest
-        .spyOn(httpService, 'post')
-        .mockImplementationOnce(() => of(responseMock));
+      jest.spyOn(httpService, 'post').mockReturnValueOnce(
+        throwError(() => {
+          return { response: responseMock };
+        }),
+      );
+
+      jest.spyOn(Logger, 'error').mockImplementation();
 
       const result = await ssoService.getUserInfo(bearerToken);
 
       expect(result).toEqual(responseMock.data);
+      expect(Logger.error).toHaveBeenCalledWith(
+        'Invalid Token: Authorization failed at SSO service',
+        responseMock,
+      );
     });
 
     it('should throw InternalServerErrorException if the request fails with other error status', async () => {
       const responseMock: AxiosResponse = {
         data: {},
-        status: HttpStatus.BAD_REQUEST,
-        statusText: 'Bad Request',
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        statusText: 'Internal Server Error',
         headers: {},
         config: {} as any,
       };
 
       jest
         .spyOn(httpService, 'post')
-        .mockResolvedValueOnce(of(responseMock) as never);
+        .mockReturnValueOnce(throwError(() => responseMock));
+
+      jest.spyOn(Logger, 'error').mockImplementation();
 
       await expect(ssoService.getUserInfo(bearerToken)).rejects.toThrow(
         InternalServerErrorException,
+      );
+      expect(Logger.error).toHaveBeenCalledWith(
+        'Unexpected error during SSO service request',
+        responseMock,
       );
     });
 
@@ -114,13 +136,18 @@ describe('SSOService Unit Tests', () => {
         .spyOn(httpService, 'post')
         .mockReturnValueOnce(throwError(() => errorMock));
 
+      jest.spyOn(Logger, 'error').mockImplementation();
+
       await expect(ssoService.getUserInfo(bearerToken)).rejects.toThrow(
         BadGatewayException,
+      );
+      expect(Logger.error).toHaveBeenCalledWith(
+        'Unavailable SSO Server: Connection refused',
       );
     });
 
     it('should throw InternalServerErrorException for other unexpected authorization errors', async () => {
-      const errorMock: Error = new Error('Unexpected error');
+      const errorMock: Error = new Error('Testable Unexpected error');
 
       jest
         .spyOn(httpService, 'post')

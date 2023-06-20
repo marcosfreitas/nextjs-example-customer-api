@@ -1,21 +1,14 @@
 import { Redis, RedisOptions } from 'ioredis';
 import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
+import { Environment } from '@src/infrastructure/configuration/contracts/env.config';
 
 @Injectable()
 export class RedisCacheService {
   private _cacheManager: Redis;
 
-  constructor(private readonly configService: ConfigService) {
-    this._cacheManager = new Redis({
-      port: configService.get('cacheServer.redisPort'),
-      host: configService.get('cacheServer.redisHost'),
-      username: 'default',
-      password: configService.get('cacheServer.redisPassword'),
-      db: 0,
-      ttl: parseInt(configService.get('cacheServer.cacheTtl')),
-      keyPrefix: 'customer:',
-    } as RedisOptions);
+  constructor(private readonly configService: ConfigService, client: Redis) {
+    this._cacheManager = client;
   }
 
   async set(key: string, value: string | number | Buffer) {

@@ -2,7 +2,10 @@ import { ExecutionContext } from '@nestjs/common';
 import { HttpArgumentsHost } from '@nestjs/common/interfaces';
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { SSOUserInfoSuccessResponse } from '@infrastructure/sso/contracts/sso-user-info.response';
+import {
+  SSOUserInfoFailedResponse,
+  SSOUserInfoSuccessResponse,
+} from '@infrastructure/sso/contracts/sso-user-info.response';
 import { SSOService } from '@infrastructure/sso/services/sso.service';
 import { AuthorizationGuard } from './authorization.guard';
 
@@ -82,7 +85,9 @@ describe('AuthorizationGuard Unit Tests', () => {
       const mockContext = createMockContext(mockHttp);
 
       const userInfoResponse = {} as SSOUserInfoSuccessResponse;
-      jest.spyOn(ssoService, 'getUserInfo').mockResolvedValueOnce(userInfoResponse);
+      jest
+        .spyOn(ssoService, 'getUserInfo')
+        .mockResolvedValueOnce(userInfoResponse);
 
       const canActivateResult = await authGuard.canActivate(mockContext);
 
@@ -98,7 +103,9 @@ describe('AuthorizationGuard Unit Tests', () => {
       const mockContext = createMockContext(mockHttp);
 
       const userInfoResponse = {} as SSOUserInfoSuccessResponse;
-      jest.spyOn(ssoService, 'getUserInfo').mockResolvedValueOnce(userInfoResponse);
+      jest
+        .spyOn(ssoService, 'getUserInfo')
+        .mockResolvedValueOnce(userInfoResponse);
 
       const canActivateResult = await authGuard.canActivate(mockContext);
 
@@ -116,12 +123,39 @@ describe('AuthorizationGuard Unit Tests', () => {
       const mockContext = createMockContext(mockHttp);
 
       const userInfoResponse = {} as SSOUserInfoSuccessResponse;
-      jest.spyOn(ssoService, 'getUserInfo').mockResolvedValueOnce(userInfoResponse);
+      jest
+        .spyOn(ssoService, 'getUserInfo')
+        .mockResolvedValueOnce(userInfoResponse);
 
       const canActivateResult = await authGuard.canActivate(mockContext);
 
       expect(canActivateResult).toBe(false);
       expect(ssoService.getUserInfo).not.toHaveBeenCalled();
+    });
+
+    it('should return false when getUserInfo returns SSOUserInfoFailedResponse', async () => {
+      const mockToken = 'valid_token';
+      const mockRequest = {
+        headers: {
+          authorization: `Bearer ${mockToken}`,
+        },
+      };
+      const mockHttp = createMockHttp(mockRequest);
+      const mockContext = createMockContext(mockHttp);
+
+      const userInfoResponse = {
+        error: 'abc',
+        error_description: 'lorem ipsum',
+      } as SSOUserInfoFailedResponse;
+
+      jest
+        .spyOn(ssoService, 'getUserInfo')
+        .mockResolvedValueOnce(userInfoResponse);
+
+      const canActivateResult = await authGuard.canActivate(mockContext);
+
+      expect(canActivateResult).toBe(false);
+      expect(ssoService.getUserInfo).toHaveBeenCalledWith(mockToken);
     });
   });
 });

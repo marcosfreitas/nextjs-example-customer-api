@@ -59,21 +59,12 @@ export class SSOService {
           );
           return error.response.data;
         }
-
-        Logger.error(
-          'Unexpected Authorization error during SSO service request',
-          error.response,
-        );
-        throw new InternalServerErrorException();
       } else if (error.code === 'ECONNREFUSED') {
         Logger.error('Unavailable SSO Server: Connection refused');
         throw new BadGatewayException('Unavailable SSO Server');
       }
 
-      Logger.error(
-        'Unexpected Authorization error during SSO service request',
-        error,
-      );
+      Logger.error('Unexpected error during SSO service request', error);
       throw new InternalServerErrorException();
     }
   }
