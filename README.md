@@ -88,7 +88,7 @@ $ npm run install
 
 ## Comandos disponíveis
 
-Estes são os comandos disponíveis para executar o projeto no ambiente adequado.
+Estes são os comandos disponíveis para executar o projeto no ambiente adequado. **Dê preferencia para executar eles dentro do container Docker.**
 
 ```bash
 # executa o projeto em modo de desenvolvimento
