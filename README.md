@@ -1,5 +1,3 @@
-
-## Marcos Vinícius Silva de Freitas
 <br>
 <p align="center">
 <img src="https://nestjs.com/img/logo_text.svg" width="80">
@@ -7,54 +5,54 @@
 
 <p align="center">Project built with NestJS Framework.</p>
 
-## Descrição
+## Description
 
-Este projeto foi construído com TypeScript e Node.JS (versão mínima 18).
+This project was built with TypeScript and Node.JS (minimum version 18).
 
-Todas as configurações básicas foram feitas para:
+All basic configurations have been made to:
 
-- realizar a verificação de qualidade de código (usando o **eslint** e **prettier**)
-- dar mais qualidade ao código em desenvolvimento utilizando **TypeScript** e compilando para **Javascript**.
+- Perform code quality checks (using **eslint** and **prettier**)
+- Improve code quality during development using **TypeScript** and compiling to **JavaScript**.
 
-As dependências do projeto podem ser vistas no arquivo `package.json`;
+The project dependencies can be seen in the `package.json` file;
 
-Foram implementados testes automáticos usando o **Jest** para testar o comportamento **unitário** das classes, outros testes como de integração e E2E não foram adicionados.
+Automated tests have been implemented using **Jest** to test the **unit** behavior of classes, other tests such as integration and E2E were not added.
 
 ## DDD
 
-O projeto está propositalmente organizado seguindo o padrão Domain-Driven-Design, visando manutenção e extensibilidade do projeto. Portando, não adicionei a pasta "modules" que centralizava a criação dos módulos.
+The project is intentionally organized following the Domain-Driven-Design pattern, aiming at maintenance and extensibility of the project. Therefore, I did not add the "modules" folder that centralized module creation.
 
-O objetivo é orquestrar a arquitetura do projeto de acordo com os contextos e domínios da organização. Nesse caso nosso único contexto é o "Customers", porém fica fácil escalarmos e adicionarmos novos domínios ou contextos de acordo com as camadas existentes no projeto:
+The goal is to orchestrate the project architecture according to the organization's contexts and domains. In this case, our only context is "Customers", but it is easy to scale and add new domains or contexts according to the existing layers in the project:
 
 ```diff
 ./src
 +  - application
-  a camada de aplicação é responsável por abrigar os casos de uso (lógica antes das regras de negócio) e despachar o processamento para os serviços do domínio relacionado.
+  The application layer is responsible for housing the use cases (logic before business rules) and dispatching processing to related domain services.
 +  - domain
-  para cada domínio há um módulo do NestJS. Na camada de domínio podemos colocar a regra de negócio propriamente dita, essa solicita estruturaas como repositórios, componentes de infraestrutura, etc, para realizar as operações.
+  For each domain, there is a NestJS module. In the domain layer, we can put the actual business rule, which requires structures like repositories, infrastructure components, etc., to perform operations.
 +  - infrastructure
-  os módulos também podem ser uma parte importante e reutilizável presente em outras camadas da aplicação, por exemplo em infraestrutura temos o módulo de cache.
+  Modules can also be an important and reusable part present in other layers of the application, for example, in infrastructure, we have the cache module.
 +  - interfaces/http/controllers
-  a camada de interface é responsável pelo relacionamento com o mundo exterior.
+  The interface layer is responsible for the relationship with the outside world.
 +./test
-  na pasta de testes temos os relatórios de cobertura e arquivos do tipo .http para execução manual de requisições. Aqui podemos extender para termos testes de integração e E2E.
+  In the test folder, we have coverage reports and .http files for manual execution of requests. Here we can extend to have integration and E2E tests.
 ```
 ## Features
 
-Este projeto implementa a API Customers com as funcionalidades a seguir:
-- [x] Criação;
-- [x] Listagem de dados de um cliente por UUID;
-- [X] Atualização dos dados de um cliente por UUID;
+This project implements the Customers API with the following functionalities:
+- [x] Customer Creation;
+- [x] Listing customer data by UUID;
+- [X] Updating customer data by UUID;
 
 
-A seguir, algumas informações sobre a execução da aplicação e como você pode usá-la.
+Below are some information about running the application and how you can use it.
 
-## Variáveis de Ambiente
+## Environment Variables
 
-O sistema precisa de alguma variáveis de ambiente, parte delas estão configuradas mas de fato não são utilizadas, como é o caso das variáveis de banco de dados.
+The system needs some environment variables, some of them are configured but not actually used, such as the database variables.
 
 
-Renomeie o arquivo `.env.example` para `.env` na raiz do projeto antes da execução.
+Rename the `.env.example` file to `.env` in the root of the project before execution.
 
 
 ```diff
@@ -65,7 +63,7 @@ APP_VERSION=1.0.0
 APP_PORT=3000
 APP_DEBUGGER_PORT=8000
 
-SSO_AUTH_URL="https://accounts.seguros.vitta.com.br/auth/realms/careers/protocol/openid-connect"
+SSO_AUTH_URL="https://sso-server.xyz/oauth2/"
 
 REDIS_HOST=cache
 REDIS_PORT=6379
@@ -74,75 +72,75 @@ REDIS_PASSWORD=
 CACHE_TTL=9999999
 ```
 
-## Dependências
+## Dependencies
 
-O projeto está utilizando o **NPM** para gerenciamento de dependências.
+The project is using **NPM** for dependency management.
 
-Contudo, veremos que ao rodar o projeto todo o ambiente será preparado sozinho.
+However, when running the project, the entire environment will be prepared automatically.
 
-Para instalar manualmente execute:
+To install manually, execute:
 
 ```bash
 $ npm run install
 ```
 
-## Comandos disponíveis
+## Available Commands
 
-Estes são os comandos disponíveis para executar o projeto no ambiente adequado. **Dê preferencia para executar eles dentro do container Docker.**
+These are the available commands to execute the project in the appropriate environment. **Preferably run them inside the Docker container.**
 
 ```bash
-# executa o projeto em modo de desenvolvimento
+# runs the project in development mode
 $ npm run start
 
-# executa o projeto em modo de desenvolvimento com "watch mode"
+# runs the project in development mode with "watch mode"
 $ npm run start:dev
 
-# executa o projeto em modo de produção
+# runs the project in production mode
 $ npm run start:prod
 
-# executa os testes unitários
+# runs unit tests
 $ npm run tests
 
-# executa os testes unitários com relatório de cobertura
+# runs unit tests with coverage report
 $ npm run tests:cov
 
-# compilar o typescript
+# compile typescript
 $ npm run build
 
-# executar o lint
+# run lint
 $ npm run lint
 
 ```
 
-Outros comandos estão disponíveis no arquivo `package.json`.
+Other commands are available in the `package.json` file.
 
-### Executando o projeto com Docker Compose
+### Running the project with Docker Compose
 
-Há o arquivo `docker-compose.dev.yml` para fins de desenvolvimento que usa como base o Dockerfile da aplicação, onde todo o ambiente é preparado e a aplicação roda em estado de produção.
+There is the `docker-compose.dev.yml` file for development purposes that uses the Dockerfile of the application as a base, where the entire environment is prepared, and the application runs in production state.
 
-Um possível deploy aconteceria utilizando o Dockerfile ou um novo docker-compose.yml.
+A possible deployment would use the Dockerfile or a new docker-compose.yml.
 
 ```bash
-# há o arquivo docker-compose.dev.yml para executar o projeto em modo de desenvolvimento
+# there is the docker-compose.dev.yml file to run the project in development mode
 $ docker-compose -f docker-compose.dev.yml up
 
-# para remover o container, imagem e volume relacionados a este projeto:
+# to remove the container, image, and volume related to this project:
 $ docker-compose -f docker-compose.dev.yml down -v --rmi all
 
-# se você tiver problemas é interessante rodar o comando acima e reconstruir a imagem sem cache, após isso você pode subir o container novamente
+# if you encounter problems, it is interesting to run the above command and rebuild the image without cache, after that you can bring the container up again
 $ docker-compose -f docker-compose.dev.yml build --no-cache
 ```
 
-#### Endpoints disponíveis
+#### Available Endpoints
 
-Ao executar o projeto ele estará disponível no `localhost:3000`.
+When running the project, it will be available at `localhost:3000`.
 
 - [x] `(POST) /customers`
 - [x] `(GET) /customers/:uuid`
 - [x] `(PUT) /customers/:uuid`
 
-Para consumir os endpoints você precisar passar o token de autorização recebido da API do SSO.
-Observe na pasta de testes os exemplos de requisições, antes de consumir a aplicação obtenha o token como é feito no arquivo `sso-auth.http`.
+To consume the endpoints, you need to pass the authorization token received from the SSO API.
+Check the test folder for examples of requests, before consuming the application, obtain the token as done in the `sso-auth.http` file.
 
 ```
 ./test/requests
@@ -157,20 +155,20 @@ Observe na pasta de testes os exemplos de requisições, antes de consumir a apl
 
 #### Redis
 
-Para acessar o redis, você precisar acessar o container docker:
+To access Redis, you need to access the docker container:
 
 ```
 docker exec -it cache /bin/bash
 ```
 
-Já para acessar os registros, você precisará utilizar o redis-cli ou outra forma de sua preferência, mas lembre-se que foi definida uma senha no arquivo .env.
+To access the records, you will need to use redis-cli or another method of your choice, but remember that a password was defined in the .env file.
 
 ```
-redis-cli --pass SUA_SENHA
+redis-cli --pass YOUR_PASSWORD
 ```
 
-# Notas
+# Notes
 
-Como a estrutura do projeto é bem simples, não adicionei testes de integração e E2E, contudo o objetivo de testar o comportamento dos componentes das classes foi atingido com os testes unitários.
+As the project structure is quite simple, I did not add integration and E2E tests, however, the goal of testing the components' behavior of the classes was achieved with unit tests.
 
-Com o apoio da cobertura dos testes, após executar o `npm run test:cov`, podemos ver que há arquivos não cobertos pelos testes, isso foi proposital. Foquei apenas em construir testes para os componentes principais que estavam relacionados à regra de negócio do projeto, mas também apenas para demonstrar o conhecimento.
+With the support of test coverage, after running `npm run test:cov`, we can see that there are files not covered by tests, this was intentional. I focused only on building tests for the main components related to the project's business rule, but also just to demonstrate the knowledge.
